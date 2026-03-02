@@ -2,6 +2,7 @@ from nicegui import ui, app # UI
 import middle # relay requests to the backend
 import urllib # parse URLs
 from datetime import datetime # mainly for date graphs
+import os
 
 def is_logged_in():
     return app.storage.user.get("authenticated")
@@ -603,5 +604,6 @@ def logout():
     ui.navigate.to("/")
 
 
-ui.run(storage_secret="secret") # the storage_secret argument allows the program to keep data persistent even when the user closes the page. This is important to keep users logged in over time.
+ui.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)), storage_secret="secret") # the storage_secret argument allows the program to keep data persistent even when the user closes the page. This is important to keep users logged in over time.
 # this is shown via the app.storage.user dictionary, which contains a boolean for whether the user is authenticated, as well as a string which is the user's current username.
+# host="0.0.0.0" and the PORT env var are required for Railway deployment.
